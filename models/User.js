@@ -61,7 +61,7 @@ const UserSchema = new Schema({
     },
     birthday: {
         type: Date,
-        default: Date.now()
+        
     },
     profilePic: {
         type: String
