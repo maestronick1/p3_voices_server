@@ -22,7 +22,6 @@ require('./config/passport')(passport)
 app.use(morgan('tiny'))
 
 app.get('/', (req, res)=> {
-    //res.send('Backend home route')
     res.status(200).json({message: 'Smile, you are being watch by the Backend team'})
 })
 
