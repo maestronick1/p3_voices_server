@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+const {ObjectId} = mongoose.Schema.Types
 
 
 const CommentSchema = new Schema ({
@@ -17,10 +18,10 @@ const CommentSchema = new Schema ({
 module.exports = Comment = mongoose.model('Comment', CommentSchema)
 
 const PostSchema = new Schema ({
-    User:{
+    user:{
         type: String,
-        required: true,
         ref: "User"
+        
     },
     category: {
         type: String,
@@ -34,10 +35,10 @@ const PostSchema = new Schema ({
         type: String,
         required: true
     },
-    textContent: {
-        type: String,
-        required: true
-    },
+    reaction: [{
+        type: ObjectId,
+        ref: "User"
+    }],
     comments: [CommentSchema]
 })
 
