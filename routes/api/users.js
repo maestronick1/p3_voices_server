@@ -72,7 +72,11 @@ router.post('/login', (req, res) => {
           const payload = {
             id: user.id,
             name: user.name,
-            email: user.email
+            email: user.email,
+            birthday: user.birthday,
+            artistType: user.artistType,
+            content: user.content,
+            bio: user.bio
           };
 
           // Sign token
@@ -119,6 +123,8 @@ router.put('/:id', (req, res)=>{
 router.delete('/:id', (req, res)=>{
   db.User.findByIdAndDelete(req.params.id)
   .then(()=> {
+    post.id(req.body.bio),remove()
+    post.save()
       res.status(204).send()
   })
   .catch(err=>{
