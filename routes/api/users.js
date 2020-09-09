@@ -6,17 +6,9 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const JWT_SECRET = process.env.JWT_SECRET;
 console.log(process.env);
-
-router.get('/:id', (req, res) => {
-  db.User.findById(req.params.id)
-  .then(userInfo =>{
-    console.log(userInfo)
-    res.send(userInfo)
-  })
-  .catch(error =>{
-    console.log(error)
-  })
-})
+// Load User model
+// const User = require('../../models/User');
+const db = require('../../models');
 
 // Load User model
 // const User = require('../../models/User');
@@ -25,8 +17,10 @@ const db = require('../../models');
 router.get('/test', (req, res) => {
   res.json({ msg: 'User endpoint OK'});
 });
+
 // POST api/users/register (Public)
 router.post('/register', (req, res) => {
+  
   // Find user by email
   db.User.findOne({ email: req.body.email })
   .then(user => {
@@ -44,6 +38,7 @@ router.post('/register', (req, res) => {
         content: req.body.content,
         bio: req.body.bio
       });
+
       // Salt and hash the password, then save the user
       bcrypt.genSalt(10, (error, salt) => {
         bcrypt.hash(newUser.password, salt, (error, hash) => {
@@ -120,15 +115,19 @@ router.put('/:id', (req, res)=>{
       res.status(503).send({message: 'Server Error'})
   })
 })
+
+
 router.delete('/:id', (req, res)=>{
   db.User.findByIdAndDelete(req.params.id)
-  .then(() =>{
-    post.id(req.body.bio).remove()
+  .then(()=> {
+    post.id(req.body.bio),remove()
     post.save()
-})
+      res.status(204).send()
+  })
   .catch(err=>{
       console.log(err)
       res.status(503).send({message: 'Server Error'})
   })
 })
+
 module.exports = router
