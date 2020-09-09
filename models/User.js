@@ -18,8 +18,8 @@ const CommentSchema = new Schema ({
 module.exports = Comment = mongoose.model('Comment', CommentSchema)
 
 const PostSchema = new Schema ({
-    user:{
-        type: String,
+    postedBy:{
+        type: ObjectId,
         ref: "User"
         
     },
