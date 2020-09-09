@@ -4,24 +4,23 @@ const app = express()
 const cors = require('cors')
 const port = process.env.PORT || 8000;
 const passport = require('passport')
-
-//Middleware 
+const morgan = require('morgan')
+const users = require('./routes/api/users')
+const posts = require('./routes/api/posts')
+//middleware
 app.use(cors())
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
-
-// passport Middleware
+//passpoert middleware
 app.use(passport.initialize())
-// importing passport file into server define middleware above routes
+//importing passport file into server
 require('./config/passport')(passport)
-const users = require('./routes/api/users')
-// home rout for sever
-app.get('/', (req, res) =>{
-    res.status(200).json({message: 'Smile, you are being watch by the Backend Team'})
+app.use(morgan('tiny'))
+app.get('/', (req, res)=> {
+    res.status(200).json({message: 'Smile, you are being watch by the Backend team'})
 })
-
 app.use('/api/users', users)
-
-app.listen(port, () =>{
+app.use('/api/posts', posts)
+app.listen(port,()=>{
     console.log(`Server is running on port: ${port}`)
 })

@@ -1,34 +1,48 @@
-require("dotenv").config();
-const express = require("express");
+require('dotenv').config();
+const express = require('express');
 const router = express.Router();
-const bcrypt = require("bcryptjs");
-
-const jwt = require("jsonwebtoken");
-const passport = require("passport");
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const passport = require('passport');
 const JWT_SECRET = process.env.JWT_SECRET;
+console.log(process.env);
+
+router.get('/:id', (req, res) => {
+  db.User.findById(req.params.id)
+  .then(userInfo =>{
+    console.log(userInfo)
+    res.send(userInfo)
+  })
+  .catch(error =>{
+    console.log(error)
+  })
+})
 
 // Load User model
-const User = require("../../models/User");
-const { db } = require("../../models/User");
-
+// const User = require('../../models/User');
+const db = require('../../models');
 // GET api/users/test (Public)
-router.get("/test", (req, res) => {
-  res.json({ message: "User endpoint OK" });
+router.get('/test', (req, res) => {
+  res.json({ msg: 'User endpoint OK'});
 });
-// POST api/users/register (public)
-router.post("/register", (req, res) => {
+// POST api/users/register (Public)
+router.post('/register', (req, res) => {
   // Find user by email
-  User.findOne({ email: req.body.email })
-  .then((user) => {
+  db.User.findOne({ email: req.body.email })
+  .then(user => {
     // if email already exists, send a 400 response
     if (user) {
-      return res.status(400).json({ message: "Email already exists" });
+      return res.status(400).json({ msg: 'Email already exists'});
     } else {
-      // create a new user
+      // Create a new user
       const newUser = new User({
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
+        birthday: req.body.birthday,
+        artistType: req.body.artistType,
+        content: req.body.content,
+        bio: req.body.bio
       });
       // Salt and hash the password, then save the user
       bcrypt.genSalt(10, (error, salt) => {
@@ -37,54 +51,84 @@ router.post("/register", (req, res) => {
           // Change the password to the hash
           newUser.password = hash;
           newUser.save()
-            .then((createdUser) => res.json(createdUser))
-            .catch((error) => console.log(error));
+          .then(createdUser => res.json(createdUser))
+          .catch(error =>  console.log(error));
         });
+      });
+    }
+  })
+});
+// POST api/users/login (Public)
+router.post('/login', (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  // Find a user via email
+  db.User.findOne({ email })
+  .then(user => {
+    if (!user) {
+      res.status(400).json({ msg: 'User not found'});
+    } else {
+      // Check password with bcrypt
+      bcrypt.compare(password, user.password)
+      .then(isMatch => {
+        if (isMatch) {
+          // User match, send JSON web token
+          // Create a token payload (you can include anything you want)
+          const payload = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            birthday: user.birthday,
+            artistType: user.artistType,
+            content: user.content,
+            bio: user.bio
+          };
+          // Sign token
+          jwt.sign(payload, JWT_SECRET, { expiresIn: 3600 }, (error, token) => {
+            res.json({ success: true, token: `Bearer ${token}` });
+          });
+        } else {
+          return res.status(400).json({ password: 'Password or email is incorrect' });
+        }
       });
     }
   });
 });
-
-router.post('/login', (req, res) =>{
-    const email = req.body.email 
-    const password = req.body.password
-
-    // Find a user via email 
-    User.findOne({email})
-    .then(user =>{
-        if(!user){
-            res.status(400).json({message: 'User not found'})
-        } else {
-            // Check password with bcrypt
-            bcrypt.compare(password, user.password)
-            .then(isMatch => {
-                if(isMatch) {
-                    // User match, send JSON web token
-                    // Create a token playload (you can include anything you want)
-                    const payload = {
-                        id: user.id,
-                        name: user.name,
-                        email: user.email
-                    }
-                    // Sign token 
-                    jwt.sign(payload, JWT_SECRET, {expiresIn: 3600}, (error, token) =>{
-                        res.json({success: true, token: `Bearer ${token}`})
-                    })
-                } else {
-                    return res.status(400).json({password: 'Password or email is incorrect'})
-                }
-            })
-        }
-    })
+// GET api/users/current (Private)
+router.get('/current', passport.authenticate('jwt', { session: false }), (req, res) => {
+  res.json({
+    id: req.user.id,
+    name: req.user.name,
+    email: req.user.email,
+    birthday: req.user.birthday,
+    artistType: req.user.artistType,
+    content: req.user.content,
+    bio: req.user.bio
+  });
+});
+router.put('/:id', (req, res)=>{
+  db.User.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    {new: true}
+  )
+  .then(updatedUser => {
+      res.send(updatedUser)
+  })
+  .catch(err=>{
+      console.log(err)
+      res.status(503).send({message: 'Server Error'})
+  })
 })
-
-// Get api/users/current (Private)
-router.get('/current', passport.authenticate('jwt', {session: false}), (req, res)  =>{
-    res.json({
-        id: req.user.id,
-        name: req.user.name,
-        email: req.user.email
-    })
+router.delete('/:id', (req, res)=>{
+  db.User.findByIdAndDelete(req.params.id)
+  .then(() =>{
+    post.id(req.body.bio).remove()
+    post.save()
 })
-
-module.exports = router;
+  .catch(err=>{
+      console.log(err)
+      res.status(503).send({message: 'Server Error'})
+  })
+})
+module.exports = router
