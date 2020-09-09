@@ -44,42 +44,9 @@ const PostSchema = new Schema ({
 
 module.exports = Post = mongoose.model('Post', PostSchema)
 
-const CommentSchema = new Schema ({
-    user: [{
-        type:String,
-        ref: "User"
-    }],
-    content: {
-        type: String,
-        required: true,
-    }
-})
-module.exports = Comment = mongoose.model('Comment', CommentSchema)
 
-const PostSchema = new Schema ({
-    user:{
-        type: String,
-        ref: "User"
-    },
-    category: {
-        type: String,
-        required: true
-    },
-    title: {
-        type: String,
-        required: true
-    },
-    content: {
-        type: String,
-        required: true
-    },
-    reaction: [{
-        type: ObjectId,
-        ref: "User"
-    }],
-    comments: [CommentSchema]
-})
-module.exports = Post = mongoose.model('Post', PostSchema)
+
+
 // User Schema 
 const UserSchema = new Schema({
     name: {

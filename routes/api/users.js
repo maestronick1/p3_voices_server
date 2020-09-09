@@ -10,9 +10,6 @@ console.log(process.env);
 // const User = require('../../models/User');
 const db = require('../../models');
 
-// Load User model
-// const User = require('../../models/User');
-const db = require('../../models');
 // GET api/users/test (Public)
 router.get('/test', (req, res) => {
   res.json({ msg: 'User endpoint OK'});
