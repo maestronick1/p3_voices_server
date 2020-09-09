@@ -15,7 +15,7 @@ const db = mongoose.connection
 // console.log what host and port its running on 
 
 db.once('open', () =>{
-    console.log(`Connected to MongoDB at ${db.host}:{db.port}`)
+    console.log(`Connected to MongoDB at ${db.host}:${db.port}`)
 })
 
 db.on('error', (error) =>{

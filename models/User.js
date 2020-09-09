@@ -19,7 +19,7 @@ module.exports = Comment = mongoose.model('Comment', CommentSchema)
 
 const PostSchema = new Schema ({
     postedBy:{
-        type: ObjectId,
+        type: Object,
         ref: "User"
         
     },

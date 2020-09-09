@@ -29,6 +29,7 @@ app.get('/', (req, res)=> {
 app.use('/api/users', users)
 app.use('/api/posts', posts)
 
-app.listen(port,()=>{
-    console.log(`Server is running on port: ${port}`)
+app.listen(process.env.PORT || 8000, ()=>{
+    console.log(`☕️ You're listening to the smooth sounds of port
+     ${process.env.PORT ||8000} 🦾🤖, clean servers go brrr`)
 })

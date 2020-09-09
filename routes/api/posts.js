@@ -27,11 +27,12 @@ router.get('/post', (req, res)=>{
 
 router.post('/newpost', (req,res)=>{
     const {title, content, category} = req.body
+    console.log(newPost)
     const post = new Post ({
         title,
         content,
         category,
-        postedby: req.user
+        postedBy: req.user
     })
     post.save()
     .then(createdPost=>{
