@@ -11,31 +11,31 @@ console.log(process.env);
 // const User = require('../../models/User');
 const db = require('../../models');
 
-router.get('/post', (req, res)=>{
-    db.Post.find()
-    .populate("postedBy", "_id")
+router.get('/test', (req, res) => {
+    res.json({ msg: 'User endpoint OK'});
+  });
+
+router.get('/allcomment', (req, res)=>{
+    Comment.find()
+    .populate("user", "id")
     .sort('-createAt')
-    .then(foundPost=>{
-        res.json({post:foundPost})
+    .then(foundComment=>{
+        res.json({comment:foundComment})
     })
     .catch(err=> {
-        console.log('Error while posting post', err)
+        console.log('Error while posting comment', err)
         
     })
 })
 
-
-router.post('/newpost', (req,res)=>{
-    const {title, content, category} = req.body
-    const post = new Post ({
-        title,
-        content,
-        category,
-        postedby: req.user
+router.post('/new', (req,res)=>{
+    const comment = new Comment ({
+        comments: req.body.comments,
+        user: req.user
     })
-    post.save()
-    .then(createdPost=>{
-        res.json({post:createdPost})
+    comment.save()
+    .then(createdComment=>{
+        res.json({comment:createdComment})
     })
     .catch(err=> {
         console.log('Error while creating new post', err)
@@ -43,14 +43,13 @@ router.post('/newpost', (req,res)=>{
     })
 })
 
-
 router.put('/:id', (req,res)=>{
-    db.Post.findByIdAndUpdate(
+    Comment.findByIdAndUpdate(
         req.params.id,
         req.body,
         {new: true}
     )
-    .populate("postedBy", "_id")
+    .populate("user", "_id")
     .exec((err, result)=>{
         if (err){
             return res.status(422).json({error:err})
@@ -61,18 +60,17 @@ router.put('/:id', (req,res)=>{
 })
 
 router.delete('/:id', (req,res)=>{
-    db.Post.findByIdAndDelete(
-        req.params.id
+    Comment.findByIdAndDelete(
+        req.params.id,
+        
         )
-    .populate("postedBy", "_id")    
+    .populate("user", "id")    
     .then(()=>{
-        res.json('post deleted')
+        res.json('comment deleted')
     })
     .catch(err=>{
         res.status(400).json('error', err)
     })   
     
 })
-
-
 module.exports = router
