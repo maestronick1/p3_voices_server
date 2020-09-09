@@ -43,45 +43,36 @@ router.post('/newpost', (req,res)=>{
     })
 })
 
-// router.get('/mypost', (req,res)=>{
-//     Post.find({postedBy: req.user._id})
-//     .populate("postedBy", "name")
-//     .then(mypost=>{
-//         res.json({mypost})
-//     })
-//     .catch(err=>{
-//         console.log(err)
-//     })
-// })
 
+router.put('/:id', (req,res)=>{
+    Post.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        {new: true}
+    )
+    .populate("postedBy", "name")
+    .exec((err, result)=>{
+        if (err){
+            return res.status(422).json({error:err})
+        } else {
+            res.json(result)
+        }
+    })
+})
 
-// router.put('/editpost', (req,res)=>{
-//     db.Post.findByIdAndUpdate(
-//         req.body.title,
-//         req.body.content,
-//         req.body,category,
-//         {new: true}
-//     )
-//     .populate("postedBy", "name")
-//     .exec((err, result)=>{
-//         if (err){
-//             return res.status(422).json({error:err})
-//         } else {
-//             res.json(result)
-//         }
-//     })
-// })
+router.delete('/:id', (req,res)=>{
+    Post.findByIdAndDelete(
+        req.params.id
+        )
+    .populate("postedBy", "name")    
+    .then(()=>{
+        res.json('post deleted')
+    })
+    .catch(err=>{
+        res.status(400).json('error', err)
+    })   
+    
+})
 
-// router.delete('/deletepost', (req,res)=>{
-//     db.Post.findById(req.params.id)
-//     .then(post=>{
-//         post.id(req.params.postId)
-//         .remove()
-//         .save()
-//     })
-//     .catch(err=>{
-//         console.log("error delete", err)
-//     })
-// })
 
 module.exports = router
