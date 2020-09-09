@@ -120,7 +120,7 @@ router.put('/:id', (req, res)=>{
 })
 
 // upload profile picture
-router.put('/picture', (req, res)=>{
+router.put('/profilepicture', (req, res)=>{
   db.User.findByIdAndUpdate(
     req.user._id,
     {$set:{profilePic:req.body.profilePic}},

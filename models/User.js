@@ -36,7 +36,8 @@ const PostSchema = new Schema ({
         required: true
     },
     image: {
-        type:String
+        type:String,
+        
     },
     reaction: [{
         type: ObjectId,
@@ -69,7 +70,8 @@ const UserSchema = new Schema({
         
     },
     profilePic: {
-        type: String
+        type: String,
+        default:""
     },
     content: {
         type: String
