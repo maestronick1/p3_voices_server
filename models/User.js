@@ -35,10 +35,14 @@ const PostSchema = new Schema ({
         type: String,
         required: true
     },
+    image: {
+        type:String
+    },
     reaction: [{
         type: ObjectId,
         ref: "User"
-    }]
+    }],
+    comments: [{CommentSchema}]
     
 })
 

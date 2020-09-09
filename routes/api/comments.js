@@ -15,6 +15,7 @@ router.get('/test', (req, res) => {
     res.json({ msg: 'User endpoint OK'});
   });
 
+// find all comments
 router.get('/allcomment', (req, res)=>{
     Comment.find()
     .populate("user", "id")
@@ -28,6 +29,7 @@ router.get('/allcomment', (req, res)=>{
     })
 })
 
+//create a new comment
 router.post('/new', (req,res)=>{
     const comment = new Comment ({
         comments: req.body.comments,
@@ -43,6 +45,7 @@ router.post('/new', (req,res)=>{
     })
 })
 
+// edit comment
 router.put('/:id', (req,res)=>{
     Comment.findByIdAndUpdate(
         req.params.id,
@@ -59,6 +62,8 @@ router.put('/:id', (req,res)=>{
     })
 })
 
+
+//delete comment
 router.delete('/:id', (req,res)=>{
     Comment.findByIdAndDelete(
         req.params.id,
