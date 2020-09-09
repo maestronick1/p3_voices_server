@@ -5,10 +5,17 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const JWT_SECRET = process.env.JWT_SECRET;
+
 console.log(process.env);
 // Load User model
 // const User = require('../../models/User');
 const db = require('../../models');
+
+const multer = require('multer')
+const upload = multer({ dest: './uploads'})
+const cloudinary = require('cloudinary')
+
+cloudinary.config(process.env.CLOUDINARY_URL)
 
 // GET api/users/test (Public)
 router.get('/test', (req, res) => {
@@ -125,6 +132,21 @@ router.delete('/:id', (req, res)=>{
       console.log(err)
       res.status(503).send({message: 'Server Error'})
   })
+})
+
+router.post('/profilePic', (req, res) => {
+  cloudinary.uploader.upload(req.file.path, (result) => {
+    console.log(result.url)
+    db.User.findOne(req.user.id)
+    .then(user =>{
+      console.log(user)
+    })
+    .catch(err => {
+      console.log("ERROR: ", err)
+    })
+    
+    })
+    
 })
 
 module.exports = router
