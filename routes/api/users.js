@@ -10,7 +10,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 console.log(process.env);
 // Load User model
 // const User = require('../../models/User');
-const db = require('../../models/User');
+const db = require('../../models');
 
 const multer = require('multer')
 const upload = multer({ dest: './uploads'})
