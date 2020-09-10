@@ -22,8 +22,8 @@ router.get('/post', (req, res)=>{
     Post.find()
     .populate("postedBy", "_id")
     .sort('-createAt')
-    .then(foundPost=>{
-        res.json({foundPost})
+    .then(post=>{
+        res.json({post})
         // console.log(foundPost)
     })
     .catch(err=> {
