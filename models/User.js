@@ -3,47 +3,6 @@ const Schema = mongoose.Schema
 const {ObjectId} = mongoose.Schema.Types
 
 
-const CommentSchema = new Schema ({
-    user: [{
-        type:ObjectId,
-        ref: "User"
-    }],
-
-    comments: {
-        type: String,
-        required: true,
-        
-    }
-})
-module.exports = Comment = mongoose.model('Comment', CommentSchema)
-
-const PostSchema = new Schema ({
-    postedBy:{
-        type: Object,
-        ref: "User"
-        
-    },
-    category: {
-        type: String,
-        required: true
-    },
-    title: {
-        type: String,
-        required: true
-    },
-    content: {
-        type: String,
-        required: true
-    },
-    reaction: [{
-        type: ObjectId,
-        ref: "User"
-    }]
-    
-})
-
-module.exports = Post = mongoose.model('Post', PostSchema)
-
 
 
 
@@ -68,7 +27,8 @@ const UserSchema = new Schema({
         
     },
     profilePic: {
-        type: String
+        type: String,
+        
     },
     content: {
         type: String
@@ -82,8 +42,7 @@ const UserSchema = new Schema({
     },
     imageUrl:{
         type: String
-    },
-    post: [PostSchema],
+    }
     
     
 
