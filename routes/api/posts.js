@@ -11,11 +11,12 @@ console.log(process.env);
 const db = require('../../models');
 
 router.get('/post', (req, res)=>{
-    db.Post.find()
-    .populate("postedBy", "_id")
-    .sort('-createAt')
+    Post.find()
+    // .populate("postedBy", "_id")
+    // .sort('-createAt')
     .then(foundPost=>{
-        res.json({post:foundPost})
+        res.json({foundPost})
+        // console.log(foundPost)
     })
     .catch(err=> {
         console.log('Error while posting post', err)
@@ -25,13 +26,12 @@ router.get('/post', (req, res)=>{
 
 
 router.post('/newpost', (req,res)=>{
+    // console.log(req.body)
     const {title, content, category} = req.body
-    console.log(newPost)
     const post = new Post ({
         title,
         content,
-        category,
-        postedBy: req.user
+        category
     })
     post.save()
     .then(createdPost=>{
