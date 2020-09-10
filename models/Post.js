@@ -3,6 +3,7 @@ const Schema = mongoose.Schema
 const {ObjectId} = mongoose.Schema.Types
 
 
+
 const CommentSchema = new Schema ({
     user: [{
         type:ObjectId,
@@ -16,9 +17,11 @@ const CommentSchema = new Schema ({
     }
 })
 
+
 const PostSchema = new Schema ({
     postedBy:{
-        type: Object,
+        type: ObjectId,
+
         ref: "User"
         
     },
@@ -34,11 +37,16 @@ const PostSchema = new Schema ({
         type: String,
         required: true
     },
+    image: {
+        type:String,
+    },
     reaction: [{
         type: ObjectId,
         ref: "User"
     }]
+   
     
 })
 
 module.exports = Post = mongoose.model('Post', PostSchema)
+

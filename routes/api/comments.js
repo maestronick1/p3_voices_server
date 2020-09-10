@@ -9,14 +9,15 @@ const JWT_SECRET = process.env.JWT_SECRET;
 console.log(process.env);
 // Load User model
 // const User = require('../../models/User');
-const db = require('../../models');
+const db = require('../../models/Comment');
 
 router.get('/test', (req, res) => {
     res.json({ msg: 'User endpoint OK'});
   });
 
+// find all comments
 router.get('/allcomment', (req, res)=>{
-    Comment.find()
+    db.Comment.find()
     .populate("user", "id")
     .sort('-createAt')
     .then(foundComment=>{
@@ -28,6 +29,7 @@ router.get('/allcomment', (req, res)=>{
     })
 })
 
+//create a new comment
 router.post('/new', (req,res)=>{
     const comment = new Comment ({
         comments: req.body.comments,
@@ -43,8 +45,9 @@ router.post('/new', (req,res)=>{
     })
 })
 
+// edit comment
 router.put('/:id', (req,res)=>{
-    Comment.findByIdAndUpdate(
+    db.Comment.findByIdAndUpdate(
         req.params.id,
         req.body,
         {new: true}
@@ -59,8 +62,10 @@ router.put('/:id', (req,res)=>{
     })
 })
 
+
+//delete comment
 router.delete('/:id', (req,res)=>{
-    Comment.findByIdAndDelete(
+    db.Comment.findByIdAndDelete(
         req.params.id,
         
         )
