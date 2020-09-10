@@ -1,5 +1,9 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+const {ObjectId} = mongoose.Schema.Types
+
+
+
 
 
 // User Schema 
@@ -35,8 +39,13 @@ const UserSchema = new Schema({
     artistType:{
         type: String,
         required: true
+    },
+    imageUrl:{
+        type: String
     }
-   
+    
+    
+
 })
 
 module.exports = User = mongoose.model('User', UserSchema)

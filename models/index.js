@@ -25,4 +25,6 @@ db.on('error', (error) =>{
 // export the user here
 // this is th mongo set up 
 module.exports.User = require('./User')
+module.exports.Post = require('./Post')
+
 

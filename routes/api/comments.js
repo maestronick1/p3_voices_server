@@ -9,25 +9,25 @@ const JWT_SECRET = process.env.JWT_SECRET;
 console.log(process.env);
 // Load User model
 // const User = require('../../models/User');
-const db = require('../../models/Comment');
+const db = require('../../models');
 
 router.get('/test', (req, res) => {
     res.json({ msg: 'User endpoint OK'});
   });
 
 // find all comments
-router.get('/allcomment', (req, res)=>{
-    db.Comment.find()
-    .populate("user", "id")
-    .sort('-createAt')
-    .then(foundComment=>{
-        res.json({comment:foundComment})
-    })
-    .catch(err=> {
-        console.log('Error while posting comment', err)
+// router.get('/allcomment', (req, res)=>{
+//     db.Comment.find()
+//     .populate("user", "id")
+//     .sort('-createAt')
+//     .then(foundComment=>{
+//         res.json({comment:foundComment})
+//     })
+//     .catch(err=> {
+//         console.log('Error while posting comment', err)
         
-    })
-})
+//     })
+// })
 
 //create a new comment
 router.post('/new', (req,res)=>{
@@ -35,7 +35,7 @@ router.post('/new', (req,res)=>{
         comments: req.body.comments,
         user: req.user
     })
-    comment.save()
+    db.comment.save()
     .then(createdComment=>{
         res.json({comment:createdComment})
     })

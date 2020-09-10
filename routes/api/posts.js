@@ -7,15 +7,19 @@ const passport = require('passport');
 const JWT_SECRET = process.env.JWT_SECRET;
 console.log(process.env);
 // Load User model
-// const User = require('../../models/User');
+
 const Post = require('../../models/Post');
+const db = require('../../models')
+
+
 
 router.get('/post', (req, res)=>{
     Post.find()
     .populate("postedBy", "_id")
     .sort('-createAt')
-    .then(foundPost=>{
-        res.json({post:foundPost})
+    .then(post=>{
+        res.json({post})
+        // console.log(foundPost)
     })
     .catch(err=> {
         console.log('Error while posting post', err)
@@ -23,17 +27,17 @@ router.get('/post', (req, res)=>{
     })
 })
 
-// create a new post
-router.post('/newpost', (req, res)=>{
+
+
+router.post('/newpost', (req,res)=>{
+    console.log(req.body)
     const {title, content, category} = req.body
-    const post = new Post ({
-        
+    db.Post.create ({
         title,
         content,
-        category,
-        postedBy: req.user
+        category
     })
-    post.save()
+    // post.save()
     .then(createdPost=>{
         res.json({post:createdPost})
     })
