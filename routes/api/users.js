@@ -1,15 +1,15 @@
+
 require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const JWT_SECRET = process.env.JWT_SECRET;
 console.log(process.env);
 // Load User model
 // const User = require('../../models/User');
-const db = require('../../models');
+const db = require('../../models/User');
 
 // GET api/users/test (Public)
 router.get('/test', (req, res) => {
@@ -51,12 +51,10 @@ router.post('/register', (req, res) => {
     }
   })
 });
-
 // POST api/users/login (Public)
 router.post('/login', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-
   // Find a user via email
   db.User.findOne({ email })
   .then(user => {
@@ -78,7 +76,6 @@ router.post('/login', (req, res) => {
             content: user.content,
             bio: user.bio
           };
-
           // Sign token
           jwt.sign(payload, JWT_SECRET, { expiresIn: 3600 }, (error, token) => {
             res.json({ success: true, token: `Bearer ${token}` });
@@ -90,7 +87,6 @@ router.post('/login', (req, res) => {
     }
   });
 });
-
 // GET api/users/current (Private)
 router.get('/current', passport.authenticate('jwt', { session: false }), (req, res) => {
   res.json({
@@ -103,7 +99,6 @@ router.get('/current', passport.authenticate('jwt', { session: false }), (req, r
     bio: req.user.bio
   });
 });
-
 router.put('/:id', (req, res)=>{
   db.User.findByIdAndUpdate(
     req.params.id,

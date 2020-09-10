@@ -2,17 +2,16 @@ require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const JWT_SECRET = process.env.JWT_SECRET;
 console.log(process.env);
 // Load User model
 // const User = require('../../models/User');
-const db = require('../../models');
+const db = require('../../models/Post');
 
 router.get('/post', (req, res)=>{
-    db.Post.find()
+    Post.find()
     .populate("postedBy", "_id")
     .sort('-createAt')
     .then(foundPost=>{
@@ -25,14 +24,14 @@ router.get('/post', (req, res)=>{
 })
 
 // create a new post
-router.post('/newpost', (req,res)=>{
-    const {image, title, content, category} = req.body
+router.post('/newpost', (req, res)=>{
+    const {title, content, category} = req.body
     const post = new Post ({
-        image,
+        
         title,
         content,
         category,
-        postedby: req.user
+        postedBy: req.user
     })
     post.save()
     .then(createdPost=>{
@@ -46,7 +45,7 @@ router.post('/newpost', (req,res)=>{
 
 //upload image
 router.put('/picture', (req, res)=>{
-    db.Post.findByIdAndUpdate(
+    Post.findByIdAndUpdate(
       req.user._id,
       {$set:{image:req.body.image}},
       {new: true},
@@ -90,7 +89,7 @@ router.put('/picture', (req, res)=>{
 
 // edit post
 router.put('/:id', (req,res)=>{
-    db.Post.findByIdAndUpdate(
+   Post.findByIdAndUpdate(
         req.params.id,
         req.body,
         {new: true}
@@ -107,7 +106,7 @@ router.put('/:id', (req,res)=>{
 
 // delete post
 router.delete('/:id', (req,res)=>{
-    db.Post.findByIdAndDelete(
+    Post.findByIdAndDelete(
         req.params.id
         )
     .populate("postedBy", "_id")    

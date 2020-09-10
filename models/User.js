@@ -1,53 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-const {ObjectId} = mongoose.Schema.Types
 
-
-const CommentSchema = new Schema ({
-    user: [{
-        type:ObjectId,
-        ref: "User"
-    }],
-
-    comments: {
-        type: String,
-        required: true,
-        
-    }
-})
-module.exports = Comment = mongoose.model('Comment', CommentSchema)
-
-const PostSchema = new Schema ({
-    postedBy:{
-        type: ObjectId,
-        ref: "User"
-        
-    },
-    category: {
-        type: String,
-        required: true
-    },
-    title: {
-        type: String,
-        required: true
-    },
-    content: {
-        type: String,
-        required: true
-    },
-    image: {
-        type:String,
-        
-    },
-    reaction: [{
-        type: ObjectId,
-        ref: "User"
-    }],
-    comments: [{CommentSchema}]
-    
-})
-
-module.exports = Post = mongoose.model('Post', PostSchema)
 
 // User Schema 
 const UserSchema = new Schema({
@@ -71,7 +24,7 @@ const UserSchema = new Schema({
     },
     profilePic: {
         type: String,
-        default:""
+        
     },
     content: {
         type: String
@@ -82,11 +35,8 @@ const UserSchema = new Schema({
     artistType:{
         type: String,
         required: true
-    },
-    post: [PostSchema],
-    
-    
-
+    }
+   
 })
 
 module.exports = User = mongoose.model('User', UserSchema)

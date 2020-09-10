@@ -26,11 +26,11 @@ app.use(morgan('tiny'))
 app.get('/', (req, res)=> {
     res.status(200).json({message: 'Smile, you are being watch by the Backend team'})
 })
-
 app.use('/api/users', users)
 app.use('/api/posts', posts)
 app.use('/api/comments', comments)
 
-app.listen(port,()=>{
-    console.log(`Server is running on port: ${port}`)
+app.listen(process.env.PORT || 8000, ()=>{
+    console.log(`☕️ You're listening to the smooth sounds of port
+     ${process.env.PORT ||8000} 🦾🤖, clean servers go brrr`)
 })
