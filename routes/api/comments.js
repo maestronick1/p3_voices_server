@@ -7,42 +7,57 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const JWT_SECRET = process.env.JWT_SECRET;
 console.log(process.env);
-// Load User model
-// const User = require('../../models/User');
-const db = require('../../models/Comment');
-
+const db = require('../../models');
+let Comments = require('../../models/Comments')
 router.get('/test', (req, res) => {
     res.json({ msg: 'User endpoint OK'});
   });
 
 // find all comments
-router.get('/allcomment', (req, res)=>{
-    db.Comment.find()
-    .populate("user", "id")
-    .sort('-createAt')
-    .then(foundComment=>{
-        res.json({comment:foundComment})
-    })
-    .catch(err=> {
-        console.log('Error while posting comment', err)
+// router.get('/allcomment', (req, res)=>{
+//     db.Comment.find()
+//     .populate("user", "id")
+//     .sort('-createAt')
+//     .then(foundComment=>{
+//         res.json({comment:foundComment})
+//     })
+//     .catch(err=> {
+//         console.log('Error while posting comment', err)
         
-    })
-})
+//     })
+// })
 
 //create a new comment
-router.post('/new', (req,res)=>{
-    const comment = new Comment ({
-        comments: req.body.comments,
-        user: req.user
+router.post('/:postId/new', (req,res)=>{
+    console.log(req.body)
+    db.Post.findOne({
+        _id: req.body.post._id
     })
-    comment.save()
-    .then(createdComment=>{
-        res.json({comment:createdComment})
+    .then(post =>{
+        console.log(post)
+            post.comments.push({
+            content: req.body.content,
+            // user: req.body.user._id
+            user: req.body.user.id
+        })
+        post.save()
+        .then(post =>{
+
+            console.log(post)
+        })
     })
-    .catch(err=> {
-        console.log('Error while creating new post', err)
+    // const comment = new Comment ({
+    //     content: req.body.content,
+    //     user: req.body.user._id
+    // })
+    // comment.save()
+    // .then(createdComment=>{
+    //     res.json({comment:createdComment})
+    // })
+    // .catch(err=> {
+    //     console.log('Error while creating new post', err)
         
-    })
+    // })
 })
 
 // edit comment

@@ -1,27 +1,22 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const {ObjectId} = mongoose.Schema.Types
+// let Comments = require('./Comments')
 
-
-
-const CommentSchema = new Schema ({
-    user: [{
-        type:ObjectId,
+const Comments = new Schema ({
+    user: {
+        type: ObjectId,
         ref: "User"
-    }],
-
-    comments: {
+    },
+    content: {
         type: String,
         required: true,
-        
     }
 })
-
 
 const PostSchema = new Schema ({
     postedBy:{
         type: ObjectId,
-
         ref: "User"
         
     },
@@ -43,7 +38,8 @@ const PostSchema = new Schema ({
     reaction: [{
         type: ObjectId,
         ref: "User"
-    }]
+    }],
+    comments: [Comments]
    
     
 })
