@@ -16,7 +16,6 @@ const CommentSchema = new Schema ({
     }
 })
 
-
 const PostSchema = new Schema ({
     postedBy:{
         type: Object,
@@ -42,50 +41,4 @@ const PostSchema = new Schema ({
     
 })
 
-
-
-
-
-// User Schema 
-const UserSchema = new Schema({
-    name: {
-        type: String,
-        required: true,
-        minlength: 1,
-        maxlength: 99
-    },
-    email: {
-        type: String,
-        required: true,
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    birthday: {
-        type: Date,
-        
-    },
-    profilePic: {
-        type: String
-    },
-    content: {
-        type: String
-    },
-    bio: {
-        type:String
-    },
-    artistType:{
-        type: String,
-        required: true
-    },
-    post: [PostSchema],
-    
-    
-
-})
-
-module.exports = User = mongoose.model('User', UserSchema)
-
-
-
+module.exports = Post = mongoose.model('Post', PostSchema)

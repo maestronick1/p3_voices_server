@@ -7,11 +7,14 @@ const passport = require('passport');
 const JWT_SECRET = process.env.JWT_SECRET;
 console.log(process.env);
 // Load User model
-// const User = require('../../models/User');
+const User = require('../../models/User');
 const db = require('../../models');
 
-router.get('/post', (req, res)=>{
-    db.Post.find()
+
+
+
+router.get('/', (req, res)=>{
+    db.Post.find({})
     .populate("postedBy", "_id")
     .sort('-createAt')
     .then(foundPost=>{
@@ -25,15 +28,14 @@ router.get('/post', (req, res)=>{
 
 
 router.post('/newpost', (req,res)=>{
+    console.log(req.body)
     const {title, content, category} = req.body
-    console.log(newPost)
-    const post = new Post ({
+    db.Post.create ({
         title,
         content,
-        category,
-        postedBy: req.user
+        category
     })
-    post.save()
+    // post.save()
     .then(createdPost=>{
         res.json({post:createdPost})
     })
