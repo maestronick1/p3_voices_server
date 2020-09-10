@@ -27,8 +27,6 @@ router.get('/post', (req, res)=>{
     })
 })
 
-
-
 router.post('/newpost', (req,res)=>{
     console.log(req.body)
     const {title, content, category} = req.body
@@ -119,8 +117,7 @@ router.delete('/:id', (req,res)=>{
     })
     .catch(err=>{
         res.status(400).json('error', err)
-    })   
-    
+    })       
 })
 
 

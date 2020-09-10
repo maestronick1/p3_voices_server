@@ -31,13 +31,13 @@ router.get('/test', (req, res) => {
 
 //create a new comment
 router.post('/new', (req,res)=>{
-    const comment = new Comment ({
+    const comments = new Comments ({
         comments: req.body.comments,
         user: req.user
     })
-    db.comment.save()
+    comments.save()
     .then(createdComment=>{
-        res.json({comment:createdComment})
+        res.json({comments:createdComment})
     })
     .catch(err=> {
         console.log('Error while creating new post', err)
@@ -47,7 +47,7 @@ router.post('/new', (req,res)=>{
 
 // edit comment
 router.put('/:id', (req,res)=>{
-    db.Comment.findByIdAndUpdate(
+    db.Comments.findByIdAndUpdate(
         req.params.id,
         req.body,
         {new: true}
@@ -64,8 +64,8 @@ router.put('/:id', (req,res)=>{
 
 
 //delete comment
-router.delete('/:id', (req,res)=>{
-    db.Comment.findByIdAndDelete(
+router.delete('/:_id', (req,res)=>{
+    db.Comments.findByIdAndDelete(
         req.params.id,
         
         )
