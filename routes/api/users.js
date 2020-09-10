@@ -9,7 +9,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 console.log(process.env);
 // Load User model
 // const User = require('../../models/User');
-const db = require('../../models');
+const db = require('../../models/User');
 
 // GET api/users/test (Public)
 router.get('/test', (req, res) => {
@@ -114,6 +114,19 @@ router.put('/:id', (req, res)=>{
   })
 })
 
+// upload profile picture
+router.put('/profilepicture', (req, res)=>{
+  db.User.findByIdAndUpdate(
+    req.user._id,
+    {$set:{profilePic:req.body.profilePic}},
+    {new: true},
+    (err, result)=>{
+      if(err){
+        return res.status(422).json({error:'pic cannot post'})
+      }
+      res.json(result)
+    })
+})
 
 router.delete('/:id', (req, res)=>{
   db.User.findByIdAndDelete(req.params.id)

@@ -8,10 +8,10 @@ const JWT_SECRET = process.env.JWT_SECRET;
 console.log(process.env);
 // Load User model
 // const User = require('../../models/User');
-const db = require('../../models');
+const db = require('../../models/Post');
 
 router.get('/post', (req, res)=>{
-    db.Post.find()
+    Post.find()
     .populate("postedBy", "_id")
     .sort('-createAt')
     .then(foundPost=>{
@@ -23,11 +23,11 @@ router.get('/post', (req, res)=>{
     })
 })
 
-
-router.post('/newpost', (req,res)=>{
+// create a new post
+router.post('/newpost', (req, res)=>{
     const {title, content, category} = req.body
-    console.log(newPost)
     const post = new Post ({
+        
         title,
         content,
         category,
@@ -43,9 +43,53 @@ router.post('/newpost', (req,res)=>{
     })
 })
 
+//upload image
+router.put('/picture', (req, res)=>{
+    Post.findByIdAndUpdate(
+      req.user._id,
+      {$set:{image:req.body.image}},
+      {new: true},
+      (err, result)=>{
+        if(err){
+          return res.status(422).json({error:'pic cannot post'})
+        }
+        res.json(result)
+      })
+  })
 
+//click 'like' button
+// router.put('/reaction', (req, res)=>{
+//     db.Post.findByIdAndUpdate(
+//         req.body.id,
+//         {$push:{reaction:req.user.id}},
+//         {new: true}) 
+// })
+// .exec((err, result)=>{
+//     if(err){
+//         return res.status(422).json({error: err})
+//     } else {
+//         res.json(result)
+//     }
+// })
+
+// unclick 'like' button
+// router.put('/reaction', (req, res)=>{
+//     db.Post.findByIdAndUpdate(
+//         req.body.id,
+//         {$pull:{reaction:req.user.id}},
+//         {new: true}) 
+// })
+// .exec((err, result)=>{
+//     if(err){
+//         return res.status(422).json({error: err})
+//     } else {
+//         res.json(result)
+//     }
+// })
+
+// edit post
 router.put('/:id', (req,res)=>{
-    db.Post.findByIdAndUpdate(
+   Post.findByIdAndUpdate(
         req.params.id,
         req.body,
         {new: true}
@@ -60,8 +104,9 @@ router.put('/:id', (req,res)=>{
     })
 })
 
+// delete post
 router.delete('/:id', (req,res)=>{
-    db.Post.findByIdAndDelete(
+    Post.findByIdAndDelete(
         req.params.id
         )
     .populate("postedBy", "_id")    
