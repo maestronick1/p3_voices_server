@@ -37,7 +37,6 @@ router.post('/:postId/new', (req,res)=>{
         console.log(post)
             post.comments.push({
             content: req.body.content,
-            // user: req.body.user._id
             user: req.body.user.id
         })
         post.save()
@@ -46,20 +45,7 @@ router.post('/:postId/new', (req,res)=>{
             console.log(post)
         })
     })
-    // const comment = new Comment ({
-    //     content: req.body.content,
-    //     user: req.body.user._id
-    // })
-    // comment.save()
-    // .then(createdComment=>{
-    //     res.json({comment:createdComment})
-    // })
-    // .catch(err=> {
-    //     console.log('Error while creating new post', err)
-        
-    // })
 })
-
 // edit comment
 router.put('/:id', (req,res)=>{
     db.Comments.findByIdAndUpdate(
@@ -82,8 +68,7 @@ router.put('/:id', (req,res)=>{
 router.delete('/:_id', (req,res)=>{
     db.Comments.findByIdAndDelete(
         req.params.id,
-        
-        )
+    )
     .populate("user", "id")    
     .then(()=>{
         res.json('comment deleted')

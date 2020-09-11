@@ -105,13 +105,17 @@ router.get('/current', passport.authenticate('jwt', { session: false }), (req, r
     bio: req.user.bio
   });
 });
+
 router.put('/:id', (req, res)=>{
   db.User.findByIdAndUpdate(
-    req.params.id,
-    req.body,
+    {_id: req.params.id},
+    {bio: req.body.bioInput},
     {new: true}
+
+    
   )
-  .then(updatedUser => {
+  .then(updatedUser => { 
+    console.log(updatedUser)
       res.send(updatedUser)
   })
   .catch(err=>{
@@ -160,6 +164,15 @@ router.post('/profilePic', (req, res) => {
     
     })
     
+})
+router.get('/:id', (req, res) =>{
+  db.User.findById(req.params.id)
+  .then(user =>{
+    res.send(user)
+  })
+  .catch(err => {
+    console.log("ERROR: ", err)
+  })
 })
 
 module.exports = router
