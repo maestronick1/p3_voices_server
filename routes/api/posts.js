@@ -60,37 +60,7 @@ router.put('/picture', (req, res)=>{
       })
   })
 
-//click 'like' button
-// router.put('/reaction', (req, res)=>{
-//     db.Post.findByIdAndUpdate(
-//         req.body.id,
-//         {$push:{reaction:req.user.id}},
-//         {new: true}) 
-// })
-// .exec((err, result)=>{
-//     if(err){
-//         return res.status(422).json({error: err})
-//     } else {
-//         res.json(result)
-//     }
-// })
 
-// unclick 'like' button
-// router.put('/reaction', (req, res)=>{
-//     db.Post.findByIdAndUpdate(
-//         req.body.id,
-//         {$pull:{reaction:req.user.id}},
-//         {new: true}) 
-// })
-// .exec((err, result)=>{
-//     if(err){
-//         return res.status(422).json({error: err})
-//     } else {
-//         res.json(result)
-//     }
-// })
-
-// edit post
 router.put('/:id', (req,res)=>{
    Post.findByIdAndUpdate(
         req.params.id,
