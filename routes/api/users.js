@@ -165,5 +165,14 @@ router.post('/profilePic', (req, res) => {
     })
     
 })
+router.get('/:id', (req, res) =>{
+  db.User.findById(req.params.id)
+  .then(user =>{
+    res.send(user)
+  })
+  .catch(err => {
+    console.log("ERROR: ", err)
+  })
+})
 
 module.exports = router
