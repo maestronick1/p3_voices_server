@@ -7,12 +7,8 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const JWT_SECRET = process.env.JWT_SECRET;
 console.log(process.env);
-
-// Load User model
-// const User = require('../../models/User');
 const db = require('../../models');
 let Comments = require('../../models/Comments')
-
 router.get('/test', (req, res) => {
     res.json({ msg: 'User endpoint OK'});
   });
@@ -48,7 +44,6 @@ router.post('/:postId/new', (req,res)=>{
             res.json({post, user: req.body.user})
             console.log(post)
         })
-
     })
 })
 // edit comment
