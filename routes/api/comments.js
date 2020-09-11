@@ -50,7 +50,7 @@ router.post('/:postId/new', (req,res)=>{
         })
 
     })
-  
+})
 // edit comment
 router.put('/:id', (req,res)=>{
     db.Comments.findByIdAndUpdate(
@@ -73,8 +73,7 @@ router.put('/:id', (req,res)=>{
 router.delete('/:_id', (req,res)=>{
     db.Comments.findByIdAndDelete(
         req.params.id,
-        
-        )
+    )
     .populate("user", "id")    
     .then(()=>{
         res.json('comment deleted')
