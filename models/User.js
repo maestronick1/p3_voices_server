@@ -23,7 +23,7 @@ const UserSchema = new Schema({
         required: true
     },
     birthday: {
-        type: Date,
+        type: Date
         
     },
     profilePic: {
