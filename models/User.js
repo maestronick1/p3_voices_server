@@ -18,7 +18,8 @@ const UserSchema = new Schema({
         required: true
     },
     birthday: {
-        type: Date,
+        type: String
+        
     },
     profilePic: {
         type: String,
