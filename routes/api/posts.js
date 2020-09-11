@@ -31,7 +31,7 @@ router.post('/newpost', (req,res)=>{
     console.log(req.body)
     const {title, content, category} = req.body
     db.Post.create ({
-        postedBy: req.body.user.id,
+        postedBy: req.body.user.id ,
         title,
         content,
         category

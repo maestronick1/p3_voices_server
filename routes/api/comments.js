@@ -42,7 +42,7 @@ router.post('/:postId/new', (req,res)=>{
         })
         post.save()
         .then(post =>{
-
+            res.json({post, user: req.body.user})
             console.log(post)
         })
     })
