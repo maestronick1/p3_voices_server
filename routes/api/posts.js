@@ -8,15 +8,10 @@ const JWT_SECRET = process.env.JWT_SECRET;
 console.log(process.env);
 // Load User model
 
-const User = require('../../models/User');
-const db = require('../../models');
 const Post = require('../../models/Post');
+const db = require('../../models')
 
 
-
-
-
-// const User = require('../../models/User');
 
 router.get('/post', (req, res)=>{
     Post.find()
@@ -31,8 +26,6 @@ router.get('/post', (req, res)=>{
         
     })
 })
-
-
 
 router.post('/newpost', (req,res)=>{
     console.log(req.body)
@@ -125,8 +118,7 @@ router.delete('/:id', (req,res)=>{
     })
     .catch(err=>{
         res.status(400).json('error', err)
-    })   
-    
+    })       
 })
 
 

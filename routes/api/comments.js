@@ -7,8 +7,12 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const JWT_SECRET = process.env.JWT_SECRET;
 console.log(process.env);
+
+// Load User model
+// const User = require('../../models/User');
 const db = require('../../models');
 let Comments = require('../../models/Comments')
+
 router.get('/test', (req, res) => {
     res.json({ msg: 'User endpoint OK'});
   });
@@ -37,7 +41,6 @@ router.post('/:postId/new', (req,res)=>{
         console.log(post)
             post.comments.push({
             content: req.body.content,
-            // user: req.body.user._id
             user: req.body.user.id
         })
         post.save()
@@ -45,24 +48,12 @@ router.post('/:postId/new', (req,res)=>{
             res.json({post, user: req.body.user})
             console.log(post)
         })
-    })
-    // const comment = new Comment ({
-    //     content: req.body.content,
-    //     user: req.body.user._id
-    // })
-    // comment.save()
-    // .then(createdComment=>{
-    //     res.json({comment:createdComment})
-    // })
-    // .catch(err=> {
-    //     console.log('Error while creating new post', err)
-        
-    // })
-})
 
+    })
+  
 // edit comment
 router.put('/:id', (req,res)=>{
-    db.Comment.findByIdAndUpdate(
+    db.Comments.findByIdAndUpdate(
         req.params.id,
         req.body,
         {new: true}
@@ -79,8 +70,8 @@ router.put('/:id', (req,res)=>{
 
 
 //delete comment
-router.delete('/:id', (req,res)=>{
-    db.Comment.findByIdAndDelete(
+router.delete('/:_id', (req,res)=>{
+    db.Comments.findByIdAndDelete(
         req.params.id,
         
         )
