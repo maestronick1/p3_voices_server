@@ -7,10 +7,8 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const JWT_SECRET = process.env.JWT_SECRET;
 console.log(process.env);
-// Load User model
-// const User = require('../../models/User');
 const db = require('../../models');
-
+let Comments = require('../../models/Comments')
 router.get('/test', (req, res) => {
     res.json({ msg: 'User endpoint OK'});
   });
@@ -30,19 +28,36 @@ router.get('/test', (req, res) => {
 // })
 
 //create a new comment
-router.post('/new', (req,res)=>{
-    const comments = new Comments ({
-        comments: req.body.comments,
-        user: req.user
+router.post('/:postId/new', (req,res)=>{
+    console.log(req.body)
+    db.Post.findOne({
+        _id: req.body.post._id
     })
-    comments.save()
-    .then(createdComment=>{
-        res.json({comments:createdComment})
+    .then(post =>{
+        console.log(post)
+            post.comments.push({
+            content: req.body.content,
+            // user: req.body.user._id
+            user: req.body.user.id
+        })
+        post.save()
+        .then(post =>{
+
+            console.log(post)
+        })
     })
-    .catch(err=> {
-        console.log('Error while creating new post', err)
+    // const comment = new Comment ({
+    //     content: req.body.content,
+    //     user: req.body.user._id
+    // })
+    // comment.save()
+    // .then(createdComment=>{
+    //     res.json({comment:createdComment})
+    // })
+    // .catch(err=> {
+    //     console.log('Error while creating new post', err)
         
-    })
+    // })
 })
 
 // edit comment

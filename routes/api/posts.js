@@ -31,13 +31,14 @@ router.post('/newpost', (req,res)=>{
     console.log(req.body)
     const {title, content, category} = req.body
     db.Post.create ({
+        postedBy: req.body.user.id,
         title,
         content,
         category
     })
     // post.save()
     .then(createdPost=>{
-        res.json({post:createdPost})
+        res.json({post:createdPost, user: req.body.user})
     })
     .catch(err=> {
         console.log('Error while creating new post', err)
