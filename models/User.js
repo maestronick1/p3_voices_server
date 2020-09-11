@@ -1,11 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const {ObjectId} = mongoose.Schema.Types
-
-
-
-
-
 // User Schema 
 const UserSchema = new Schema({
     name: {
@@ -24,11 +19,9 @@ const UserSchema = new Schema({
     },
     birthday: {
         type: Date,
-        
     },
     profilePic: {
         type: String,
-        
     },
     content: {
         type: String
@@ -43,12 +36,5 @@ const UserSchema = new Schema({
     imageUrl:{
         type: String
     }
-    
-    
-
 })
-
 module.exports = User = mongoose.model('User', UserSchema)
-
-
-

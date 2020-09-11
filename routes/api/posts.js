@@ -7,12 +7,8 @@ const passport = require('passport');
 const JWT_SECRET = process.env.JWT_SECRET;
 console.log(process.env);
 // Load User model
-
 const Post = require('../../models/Post');
 const db = require('../../models')
-
-
-
 router.get('/post', (req, res)=>{
     Post.find()
     .populate("postedBy", "_id")
@@ -23,10 +19,8 @@ router.get('/post', (req, res)=>{
     })
     .catch(err=> {
         console.log('Error while posting post', err)
-        
     })
 })
-
 router.post('/newpost', (req,res)=>{
     console.log(req.body)
     const {title, content, category} = req.body
@@ -42,10 +36,8 @@ router.post('/newpost', (req,res)=>{
     })
     .catch(err=> {
         console.log('Error while creating new post', err)
-        
     })
 })
-
 //upload image
 router.put('/picture', (req, res)=>{
     Post.findByIdAndUpdate(
@@ -59,7 +51,6 @@ router.put('/picture', (req, res)=>{
         res.json(result)
       })
   })
-
 //click 'like' button
 // router.put('/reaction', (req, res)=>{
 //     db.Post.findByIdAndUpdate(
@@ -74,7 +65,6 @@ router.put('/picture', (req, res)=>{
 //         res.json(result)
 //     }
 // })
-
 // unclick 'like' button
 // router.put('/reaction', (req, res)=>{
 //     db.Post.findByIdAndUpdate(
@@ -89,7 +79,6 @@ router.put('/picture', (req, res)=>{
 //         res.json(result)
 //     }
 // })
-
 // edit post
 router.put('/:id', (req,res)=>{
    Post.findByIdAndUpdate(
@@ -106,7 +95,6 @@ router.put('/:id', (req,res)=>{
         }
     })
 })
-
 // delete post
 router.delete('/:id', (req,res)=>{
     Post.findByIdAndDelete(
@@ -120,6 +108,4 @@ router.delete('/:id', (req,res)=>{
         res.status(400).json('error', err)
     })       
 })
-
-
 module.exports = router
