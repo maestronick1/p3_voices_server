@@ -3,7 +3,6 @@ const Schema = mongoose.Schema
 const {ObjectId} = mongoose.Schema.Types
 // let Comments = require('./Comments')
 
-
 const Comments = new Schema ({
     user: {
         type: ObjectId,
@@ -18,7 +17,8 @@ const Comments = new Schema ({
 const PostSchema = new Schema ({
     postedBy:{
         type: ObjectId,
-        ref: "User" 
+        ref: "User"
+        
     },
     category: {
         type: String,
@@ -39,8 +39,9 @@ const PostSchema = new Schema ({
         type: ObjectId,
         ref: "User"
     }],
-    comments: [Comments] 
-
+    comments: [Comments]
+   
+    
 })
 
 module.exports = Post = mongoose.model('Post', PostSchema)
