@@ -1,4 +1,3 @@
-
 require('dotenv').config();
 const express = require('express');
 const router = express.Router();
@@ -6,23 +5,18 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const JWT_SECRET = process.env.JWT_SECRET;
-
 console.log(process.env);
 // Load User model
 // const User = require('../../models/User');
 const db = require('../../models');
-
 const multer = require('multer')
 const upload = multer({ dest: './uploads'})
 const cloudinary = require('cloudinary')
-
 cloudinary.config(process.env.CLOUDINARY_URL)
-
 // GET api/users/test (Public)
 router.get('/test', (req, res) => {
   res.json({ msg: 'User endpoint OK'});
 });
-
 // POST api/users/register (Public)
 router.post('/register', (req, res) => {
   // Find user by email
@@ -42,7 +36,6 @@ router.post('/register', (req, res) => {
         content: req.body.content,
         bio: req.body.bio
       });
-
       // Salt and hash the password, then save the user
       bcrypt.genSalt(10, (error, salt) => {
         bcrypt.hash(newUser.password, salt, (error, hash) => {
@@ -105,14 +98,11 @@ router.get('/current', passport.authenticate('jwt', { session: false }), (req, r
     bio: req.user.bio
   });
 });
-
 router.put('/:id', (req, res)=>{
   db.User.findByIdAndUpdate(
     {_id: req.params.id},
     {bio: req.body.bioInput},
     {new: true}
-
-    
   )
   .then(updatedUser => { 
     console.log(updatedUser)
@@ -123,7 +113,6 @@ router.put('/:id', (req, res)=>{
       res.status(503).send({message: 'Server Error'})
   })
 })
-
 // upload profile picture
 router.put('/profilepicture', (req, res)=>{
   db.User.findByIdAndUpdate(
@@ -137,7 +126,6 @@ router.put('/profilepicture', (req, res)=>{
       res.json(result)
     })
 })
-
 router.delete('/:id', (req, res)=>{
   db.User.findByIdAndDelete(req.params.id)
   .then(()=> {
@@ -150,7 +138,6 @@ router.delete('/:id', (req, res)=>{
       res.status(503).send({message: 'Server Error'})
   })
 })
-
 router.post('/profilePic', (req, res) => {
   cloudinary.uploader.upload(req.file.path, (result) => {
     console.log(result.url)
@@ -161,9 +148,7 @@ router.post('/profilePic', (req, res) => {
     .catch(err => {
       console.log("ERROR: ", err)
     })
-    
     })
-    
 })
 router.get('/:id', (req, res) =>{
   db.User.findById(req.params.id)
@@ -174,5 +159,4 @@ router.get('/:id', (req, res) =>{
     console.log("ERROR: ", err)
   })
 })
-
 module.exports = router

@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -12,7 +11,6 @@ let Comments = require('../../models/Comments')
 router.get('/test', (req, res) => {
     res.json({ msg: 'User endpoint OK'});
   });
-
 // find all comments
 // router.get('/allcomment', (req, res)=>{
 //     db.Comment.find()
@@ -23,10 +21,8 @@ router.get('/test', (req, res) => {
 //     })
 //     .catch(err=> {
 //         console.log('Error while posting comment', err)
-        
 //     })
 // })
-
 //create a new comment
 router.post('/:postId/new', (req,res)=>{
     console.log(req.body)
@@ -62,8 +58,6 @@ router.put('/:id', (req,res)=>{
         }
     })
 })
-
-
 //delete comment
 router.delete('/:_id', (req,res)=>{
     db.Comments.findByIdAndDelete(
@@ -76,6 +70,5 @@ router.delete('/:_id', (req,res)=>{
     .catch(err=>{
         res.status(400).json('error', err)
     })   
-    
 })
 module.exports = router

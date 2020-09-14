@@ -9,20 +9,15 @@ const morgan = require('morgan')
 const users = require('./routes/api/users')
 const posts = require('./routes/api/posts')
 const comments = require('./routes/api/comments')
-
 //middleware
 app.use(cors())
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
-
 //passpoert middleware
 app.use(passport.initialize())
-
 //importing passport file into server
 require('./config/passport')(passport)
-
 app.use(morgan('tiny'))
-
 app.get('/', (req, res)=> {
     res.status(200).json({message: 'Smile, you are being watch by the Backend team'})
 })
